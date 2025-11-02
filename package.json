@@ -1,5 +1,5 @@
 {
-  "name": "slack-mcp",
+  "name": "easy-slack-mcp",
   "version": "0.0.0",
   "description": "Full-stack Model Context Protocol (MCP) server for Slack integration with easy-mcp-server",
   "main": "index.js",
@@ -13,7 +13,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "easy-mcp-server": "^1.0.93",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "slack-mcp": "^1.0.2"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.0",
