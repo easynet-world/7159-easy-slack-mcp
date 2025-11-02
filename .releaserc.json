@@ -1,6 +1,6 @@
 {
   "branches": ["master", "main"],
-  "repositoryUrl": "https://github.com/easynet-world/7159-slack-mcp.git",
+  "repositoryUrl": "https://github.com/easynet-world/7159-easy-slack-mcp.git",
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
