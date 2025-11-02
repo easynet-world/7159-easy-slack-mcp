@@ -276,3 +276,7 @@ jobs:
 - [ ] Add visual regression tests for UI components
 - [ ] Performance benchmarking
 - [ ] Accessibility testing
+
+---
+
+**Powered by [easy-mcp-server](https://github.com/easynet-world/7134-easy-mcp-server) framework**

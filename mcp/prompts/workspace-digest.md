@@ -92,3 +92,7 @@ For each channel:
 - All-hands meeting: Friday 2pm
 - Code freeze begins Jan 22
 ```
+
+---
+
+*Powered by [easy-mcp-server](https://github.com/easynet-world/7134-easy-mcp-server) framework*

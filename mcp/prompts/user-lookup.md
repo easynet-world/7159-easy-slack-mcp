@@ -65,3 +65,7 @@ AI assistant for finding and displaying Slack user information.
 - **Is Bot**: No
 - **Account Created**: Jan 15, 2023
 ```
+
+---
+
+*Powered by [easy-mcp-server](https://github.com/easynet-world/7134-easy-mcp-server) framework*

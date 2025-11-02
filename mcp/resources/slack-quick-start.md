@@ -189,3 +189,7 @@ POST /slack/reactions/add
 - Explore the full [API Documentation](api-documentation.md)
 - Check out [MCP Prompts](../prompts/) for common workflows
 - Read the [Slack API Documentation](https://api.slack.com/methods) for advanced features
+
+---
+
+**Powered by [easy-mcp-server](https://github.com/easynet-world/7134-easy-mcp-server) framework**

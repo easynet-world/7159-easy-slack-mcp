@@ -69,3 +69,7 @@ Return a comprehensive summary with:
 - Follow up on database migration timeline
 - Consider documenting the new code review process
 ```
+
+---
+
+*Powered by [easy-mcp-server](https://github.com/easynet-world/7134-easy-mcp-server) framework*

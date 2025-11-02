@@ -252,3 +252,7 @@ Common HTTP status codes:
 - `400` - Bad Request (missing required parameters)
 - `500` - Internal Server Error (Slack API errors)
 
+---
+
+**Powered by [easy-mcp-server](https://github.com/easynet-world/7134-easy-mcp-server) framework**
+

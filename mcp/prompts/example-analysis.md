@@ -18,3 +18,6 @@ AI assistant for analyzing data and providing insights.
 - **Insights**: List of key insights
 - **Recommendations**: Actionable recommendations
 
+---
+
+*Powered by [easy-mcp-server](https://github.com/easynet-world/7134-easy-mcp-server) framework*

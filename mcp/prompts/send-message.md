@@ -39,3 +39,7 @@ Message sent successfully!
 - Timestamp: 1234567890.123456
 - To reply to this message, use the timestamp above
 ```
+
+---
+
+*Powered by [easy-mcp-server](https://github.com/easynet-world/7134-easy-mcp-server) framework*
