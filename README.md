@@ -1,36 +1,78 @@
 # easy-slack-mcp
 
+<h2 style="font-size: 1.5em; margin: 1em 0;">🚀 The Easiest way to run Slack MCP</h2>
+
 **Slack integration for AI assistants** - Connect Cursor, Claude Desktop, and other MCP-compatible tools directly to Slack. Send messages, read channels, manage users, and automate workflows with AI.
 
 [![npm version](https://img.shields.io/npm/v/easy-slack-mcp)](https://www.npmjs.com/package/easy-slack-mcp)
 
 ---
 
-## 🚀 Quick Start (2 Steps)
+## 🚀 Quick Start
 
-### 1️⃣ Get your Slack Bot Token
-1. Go to [https://api.slack.com/apps](https://api.slack.com/apps)
-2. Create a new app → Install to workspace
-3. Copy your **Bot Token** (starts with `xoxb-`)
-4. Add scopes: `chat:write`, `channels:read`, `channels:history`, `users:read`, `files:write`
-
-### 2️⃣ Configure & Run
 ```bash
-# Create a directory for your Slack MCP server
-mkdir slack-mcp-server && cd slack-mcp-server
-
-# Create .env file with your token
-echo "SLACK_BOT_TOKEN=xoxb-your-token-here" > .env
-
-# Start the server (choose one method)
-npx easy-slack-mcp
-# OR if installed locally: npm start
+SLACK_BOT_TOKEN=xoxb-your-token-here npx easy-slack-mcp
 ```
 
 **That's it!** The server runs on:
 - 🌐 **REST API**: http://localhost:8887
 - 📚 **API Docs**: http://localhost:8887/docs (Swagger UI)
 - 🤖 **MCP Server**: http://localhost:8888
+
+---
+
+## 📋 Detailed Configuration
+
+### Getting Your Slack Bot Token
+
+1. Go to [https://api.slack.com/apps](https://api.slack.com/apps)
+2. Click **"Create New App"** → **"From scratch"**
+3. Give your app a name and select your workspace
+4. Click **"Create App"**
+5. Navigate to **"OAuth & Permissions"** in the sidebar
+6. Scroll down to **"Bot Token Scopes"** and add the following scopes:
+   - `chat:write` - Send messages
+   - `chat:write.public` - Send to channels bot isn't in
+   - `channels:read` - View channel info
+   - `channels:history` - Read channel messages
+   - `users:read` - View users
+   - `users:read.email` - View email addresses
+   - `files:write` - Upload files
+   - `files:read` - View files
+   - `reactions:write` - Add reactions
+   - `reactions:read` - View reactions
+7. Scroll to the top and click **"Install to Workspace"**
+8. Authorize the app
+9. Copy your **Bot User OAuth Token** (starts with `xoxb-`)
+
+### Using Environment Variables
+
+Instead of passing the token inline, you can use a `.env` file for persistent configuration:
+
+```bash
+# Create .env file
+echo "SLACK_BOT_TOKEN=xoxb-your-token-here" > .env
+
+# Run (it will automatically load .env)
+npx easy-slack-mcp
+```
+
+### Local Installation
+
+For a permanent local installation:
+
+```bash
+# Install locally
+npm install easy-slack-mcp
+
+# Create .env file
+echo "SLACK_BOT_TOKEN=xoxb-your-token-here" > .env
+
+# Run
+npm start
+# OR
+npx easy-slack-mcp
+```
 
 ---
 
@@ -185,11 +227,11 @@ curl -X POST http://localhost:8887/slack/files/upload \
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ Advanced Configuration
 
 ### Environment Variables
 
-Create a `.env` file in your project directory:
+All configuration can be set via environment variables:
 
 ```bash
 # Required
@@ -204,27 +246,7 @@ EASY_MCP_SERVER_MCP_PORT=8888           # MCP server port (default: 8888)
 
 ### Required Slack Scopes
 
-When creating your Slack app, add these Bot Token Scopes:
-
-**Messages:**
-- `chat:write` - Send messages
-- `chat:write.public` - Send to channels bot isn't in
-
-**Channels:**
-- `channels:read` - View channel info
-- `channels:history` - Read channel messages
-
-**Users:**
-- `users:read` - View users
-- `users:read.email` - View email addresses
-
-**Files:**
-- `files:write` - Upload files
-- `files:read` - View files
-
-**Reactions:**
-- `reactions:write` - Add reactions
-- `reactions:read` - View reactions
+See the [Detailed Configuration](#-detailed-configuration) section above for the complete list of required Slack scopes when setting up your app.
 
 ---
 
