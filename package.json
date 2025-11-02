@@ -45,5 +45,18 @@
   "license": "MIT",
   "engines": {
     "node": ">=16.0.0"
+  },
+  "files": [
+    "index.js",
+    "api/",
+    "tools/",
+    "prompts/",
+    "resources/",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
