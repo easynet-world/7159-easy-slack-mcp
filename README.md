@@ -1,13 +1,12 @@
 # Slack MCP Server
 
-A full-stack Model Context Protocol (MCP) server for Slack integration, built with [easy-mcp-server](https://github.com/easynet-world/7134-easy-mcp-server). This server provides comprehensive access to Slack's Web API, enabling AI agents to interact with Slack workspaces programmatically.
+A Model Context Protocol (MCP) server for Slack integration that provides comprehensive access to Slack's Web API, enabling AI agents to interact with Slack workspaces programmatically.
 
 ## Features
 
 - **Complete Slack API Integration**: Access to messaging, channels, users, files, and more
 - **MCP-Compatible**: Works with any MCP-compatible AI agent or client
 - **RESTful API**: Clean, consistent REST endpoints for all Slack operations
-- **File-Based Routing**: Automatic endpoint generation from directory structure
 - **Comprehensive Documentation**: Built-in API docs and MCP resources
 - **AI-Ready Prompts**: Pre-built prompts for common Slack workflows
 
@@ -28,11 +27,8 @@ npm install
 
 ### 3. Set Environment Variables
 
-```bash
-cp .env.example .env
-```
+Create a `.env` file in the project root and add your Slack Bot Token:
 
-Edit `.env` and add your Slack Bot Token:
 ```
 SLACK_BOT_TOKEN=xoxb-your-token-here
 ```
@@ -43,7 +39,7 @@ SLACK_BOT_TOKEN=xoxb-your-token-here
 npm start
 ```
 
-The server will start on port 8887 (configurable via `EASY_MCP_SERVER_PORT`).
+The server will start on port 8887. You can change the port by setting the `EASY_MCP_SERVER_PORT` environment variable.
 
 ## API Endpoints
 
@@ -138,77 +134,16 @@ curl -X POST http://localhost:8887/slack/files/upload \
 
 Configure these in your `.env` file:
 
-### Slack Configuration (Required)
+### Required
 - `SLACK_BOT_TOKEN` - Your Slack Bot User OAuth Token
 
-### Optional Slack Configuration
+### Optional
 - `SLACK_APP_TOKEN` - App-level token (for Socket Mode)
 - `SLACK_SIGNING_SECRET` - Signing secret (for event verification)
-
-### Server Configuration
 - `EASY_MCP_SERVER_PORT` - Server port (default: 8887)
 - `EASY_MCP_SERVER_CORS_ORIGIN` - CORS origin (default: *)
 - `EASY_MCP_SERVER_CORS_METHODS` - Allowed HTTP methods
 - `EASY_MCP_SERVER_CORS_CREDENTIALS` - Allow credentials
-
-## Development
-
-### Project Structure
-
-```
-slack-mcp/
-├── api/                    # API endpoints (file-based routing)
-│   └── slack/
-│       ├── messages/       # Message operations
-│       ├── conversations/  # Channel operations
-│       ├── users/          # User operations
-│       ├── files/          # File operations
-│       ├── reactions/      # Reaction operations
-│       └── auth/           # Authentication
-├── mcp/
-│   ├── prompts/           # MCP prompts for AI agents
-│   └── resources/         # MCP resources and documentation
-├── utils/
-│   └── slack-client.js    # Slack API client singleton
-├── .env.example           # Example environment configuration
-└── README.md              # This file
-```
-
-### Adding New Endpoints
-
-Create a new file in the `api/slack/` directory following the naming convention:
-- `get.js` for GET requests
-- `post.js` for POST requests
-- Directory structure determines the route
-
-Example: `api/slack/bookmarks/list/get.js` → `GET /slack/bookmarks/list`
-
-```javascript
-const BaseAPI = require('easy-mcp-server/base-api');
-const slackClient = require('../../../utils/slack-client');
-
-class ListBookmarks extends BaseAPI {
-  async process(req, res) {
-    try {
-      const { channel } = req.query;
-      const client = slackClient.getClient();
-      const result = await client.bookmarks.list({ channel });
-
-      res.json({
-        success: true,
-        data: result
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: error.message
-      });
-    }
-  }
-}
-
-module.exports = ListBookmarks;
-```
 
 ## Troubleshooting
 
