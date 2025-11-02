@@ -3,6 +3,13 @@
 // Bin script for easy-slack-mcp package
 // This allows the package to be run directly via: npx easy-slack-mcp
 
+// Register ts-node for TypeScript support BEFORE spawning easy-mcp-server
+try {
+  require('ts-node/register');
+} catch (e) {
+  // ts-node not available, will try to work without it
+}
+
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');

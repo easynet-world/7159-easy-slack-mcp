@@ -53,6 +53,8 @@ describe('Setup and Installation Tests', () => {
         expect(process.env.SLACK_BOT_TOKEN).toBe('xoxb-test-token-123');
         
         await server.stop();
+        // Give port time to be released
+        await new Promise(resolve => setTimeout(resolve, 300));
       } finally {
         // Restore original token
         if (originalToken) {
@@ -81,6 +83,8 @@ describe('Setup and Installation Tests', () => {
         expect(healthResponse.status).toBe(200);
         
         await server.stop();
+        // Give port time to be released
+        await new Promise(resolve => setTimeout(resolve, 300));
       } finally {
         if (originalToken) {
           process.env.SLACK_BOT_TOKEN = originalToken;
@@ -102,6 +106,9 @@ describe('Setup and Installation Tests', () => {
       delete process.env.EASY_MCP_SERVER_PORT;
       delete process.env.EASY_MCP_SERVER_MCP_PORT;
       
+      // Wait a bit to ensure previous server released port
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
       server = new DynamicAPIServer({
         port: 0,
         cors: { origin: '*' }
@@ -114,6 +121,8 @@ describe('Setup and Installation Tests', () => {
       if (server) {
         try {
           await server.stop();
+          // Give port time to be released
+          await new Promise(resolve => setTimeout(resolve, 500));
         } catch (e) {
           // Ignore cleanup errors
         }
@@ -212,7 +221,8 @@ describe('Setup and Installation Tests', () => {
     test('Package.json should have correct test script', () => {
       const packageJson = require('../package.json');
       expect(packageJson.scripts).toHaveProperty('test');
-      expect(packageJson.scripts.test).toBe('jest');
+      // Test script should include 'jest' (may have additional flags like --runInBand)
+      expect(packageJson.scripts.test).toContain('jest');
     });
 
     test('Package name should match npm package', () => {
