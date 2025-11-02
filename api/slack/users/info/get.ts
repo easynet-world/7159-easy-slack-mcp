@@ -1,22 +1,35 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for getting user info (query parameters)
+ */
+class Request {
+  // @description('User ID to get information about')
+  user!: string;
+
+  // @description('Include locale information')
+  include_locale?: boolean;
+}
+
+/**
+ * Response schema for getting user info
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('User information')
+  data: object;
+}
 
 /**
  * Get information about a Slack user
  *
- * @api {get} /slack/users/info Get user info
- * @apiName GetUserInfo
- * @apiGroup Slack Users
- * @apiDescription Get information about a user using users.info
- *
- * @apiQuery {String} user User ID to get information about
- * @apiQuery {Boolean} [include_locale] Include locale information
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
- * @apiSuccess {Object} data User information
+ * @description('Get information about a user using users.info')
+ * @summary('Get user info')
+ * @tags('slack', 'users')
  */
-class GetUserInfo extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const { user, include_locale } = req.query;
 
@@ -45,14 +58,13 @@ class GetUserInfo extends BaseAPI {
           user: result.user
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = GetUserInfo;
+module.exports = handler;

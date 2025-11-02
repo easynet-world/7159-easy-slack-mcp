@@ -1,19 +1,31 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for testing authentication (GET request has no body, uses query params)
+ */
+class Request {
+  // No query parameters needed for auth.test
+}
+
+/**
+ * Response schema for testing authentication
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('Authentication information')
+  data: object;
+}
 
 /**
  * Test authentication and get bot info
  *
- * @api {get} /slack/auth/test Test authentication
- * @apiName TestAuth
- * @apiGroup Slack Auth
- * @apiDescription Test authentication and get workspace/bot info using auth.test
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
- * @apiSuccess {Object} data Authentication information
+ * @description('Test authentication and get workspace/bot info using auth.test')
+ * @summary('Test Slack authentication')
+ * @tags('slack', 'auth')
  */
-class TestAuth extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const client = slackClient.getClient();
 
@@ -32,14 +44,13 @@ class TestAuth extends BaseAPI {
           is_enterprise_install: result.is_enterprise_install
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = TestAuth;
+module.exports = handler;

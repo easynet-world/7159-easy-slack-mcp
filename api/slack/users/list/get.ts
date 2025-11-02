@@ -1,25 +1,41 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for listing users (query parameters)
+ */
+class Request {
+  // @description('Maximum number of users to return (default: 0 for all)')
+  limit?: number;
+
+  // @description('Pagination cursor')
+  cursor?: string;
+
+  // @description('Include locale information')
+  include_locale?: boolean;
+
+  // @description('Team ID (for Enterprise Grid)')
+  team_id?: string;
+}
+
+/**
+ * Response schema for listing users
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('User list data')
+  data: object;
+}
 
 /**
  * List Slack users
  *
- * @api {get} /slack/users/list List users
- * @apiName ListUsers
- * @apiGroup Slack Users
- * @apiDescription List all users in the workspace using users.list
- *
- * @apiQuery {Number} [limit] Maximum number of users to return (default: 0 for all)
- * @apiQuery {String} [cursor] Pagination cursor
- * @apiQuery {Boolean} [include_locale] Include locale information
- * @apiQuery {String} [team_id] Optional: Team ID (for Enterprise Grid)
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
- * @apiSuccess {Object} data User list data
- * @apiSuccess {Array} data.members Array of user objects
+ * @description('List all users in the workspace using users.list')
+ * @summary('List users')
+ * @tags('slack', 'users')
  */
-class ListUsers extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const { limit, cursor, include_locale, team_id } = req.query;
 
@@ -44,14 +60,13 @@ class ListUsers extends BaseAPI {
           response_metadata: result.response_metadata
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = ListUsers;
+module.exports = handler;

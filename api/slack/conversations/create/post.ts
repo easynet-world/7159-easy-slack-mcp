@@ -1,23 +1,38 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for creating a conversation
+ */
+class Request {
+  // @description('Name of the channel to create')
+  name!: string;
+
+  // @description('Create a private channel (default: false)')
+  is_private?: boolean;
+
+  // @description('Team ID (for Enterprise Grid)')
+  team_id?: string;
+}
+
+/**
+ * Response schema for creating a conversation
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('Created channel information')
+  data: object;
+}
 
 /**
  * Create a new Slack conversation/channel
  *
- * @api {post} /slack/conversations/create Create a conversation
- * @apiName CreateConversation
- * @apiGroup Slack Conversations
- * @apiDescription Create a new channel using conversations.create
- *
- * @apiBody {String} name Name of the channel to create
- * @apiBody {Boolean} [is_private] Create a private channel (default: false)
- * @apiBody {String} [team_id] Optional: Team ID (for Enterprise Grid)
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
- * @apiSuccess {Object} data Created channel information
+ * @description('Create a new channel using conversations.create')
+ * @summary('Create a Slack conversation')
+ * @tags('slack', 'conversations')
  */
-class CreateConversation extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const { name, is_private, team_id } = req.body;
 
@@ -47,14 +62,13 @@ class CreateConversation extends BaseAPI {
           channel: result.channel
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = CreateConversation;
+module.exports = handler;

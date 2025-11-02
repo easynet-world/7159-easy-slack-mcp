@@ -1,28 +1,53 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for uploading a file
+ */
+class Request {
+  // @description('Comma-separated list of channel IDs to share the file in')
+  channels?: string;
+
+  // @description('File content for text files (required if file not provided)')
+  content?: string;
+
+  // @description('File binary data base64 encoded (required if content not provided)')
+  file?: string;
+
+  // @description('Filename of the file')
+  filename?: string;
+
+  // @description('File type identifier')
+  filetype?: string;
+
+  // @description('Initial comment to add')
+  initial_comment?: string;
+
+  // @description('Title of the file')
+  title?: string;
+
+  // @description('Thread timestamp to share in a thread')
+  thread_ts?: string;
+}
+
+/**
+ * Response schema for uploading a file
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('Uploaded file information')
+  data: object;
+}
 
 /**
  * Upload a file to Slack
  *
- * @api {post} /slack/files/upload Upload a file
- * @apiName UploadFile
- * @apiGroup Slack Files
- * @apiDescription Upload or create a file using files.upload
- *
- * @apiBody {String} [channels] Comma-separated list of channel IDs to share the file in
- * @apiBody {String} [content] File content (for text files)
- * @apiBody {String} [file] File binary data (base64 encoded)
- * @apiBody {String} [filename] Filename of the file
- * @apiBody {String} [filetype] File type identifier
- * @apiBody {String} [initial_comment] Initial comment to add
- * @apiBody {String} [title] Title of the file
- * @apiBody {String} [thread_ts] Thread timestamp to share in a thread
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
- * @apiSuccess {Object} data Uploaded file information
+ * @description('Upload or create a file using files.upload')
+ * @summary('Upload a file to Slack')
+ * @tags('slack', 'files')
  */
-class UploadFile extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const {
         channels,
@@ -66,14 +91,13 @@ class UploadFile extends BaseAPI {
           file: result.file
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = UploadFile;
+module.exports = handler;

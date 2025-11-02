@@ -1,23 +1,38 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for getting conversation info (query parameters)
+ */
+class Request {
+  // @description('Channel ID to get information about')
+  channel!: string;
+
+  // @description('Include locale information')
+  include_locale?: boolean;
+
+  // @description('Include member count')
+  include_num_members?: boolean;
+}
+
+/**
+ * Response schema for getting conversation info
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('Channel information')
+  data: object;
+}
 
 /**
  * Get information about a Slack conversation/channel
  *
- * @api {get} /slack/conversations/info Get conversation info
- * @apiName GetConversationInfo
- * @apiGroup Slack Conversations
- * @apiDescription Get information about a channel using conversations.info
- *
- * @apiQuery {String} channel Channel ID to get information about
- * @apiQuery {Boolean} [include_locale] Include locale information
- * @apiQuery {Boolean} [include_num_members] Include member count
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
- * @apiSuccess {Object} data Channel information
+ * @description('Get information about a channel using conversations.info')
+ * @summary('Get conversation info')
+ * @tags('slack', 'conversations')
  */
-class GetConversationInfo extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const { channel, include_locale, include_num_members } = req.query;
 
@@ -47,14 +62,13 @@ class GetConversationInfo extends BaseAPI {
           channel: result.channel
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = GetConversationInfo;
+module.exports = handler;

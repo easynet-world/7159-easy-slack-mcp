@@ -1,22 +1,38 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for adding a reaction
+ */
+class Request {
+  // @description('Channel ID where the message exists')
+  channel!: string;
+
+  // @description('Timestamp of the message')
+  timestamp!: string;
+
+  // @description('Reaction emoji name (without colons)')
+  name!: string;
+}
+
+/**
+ * Response schema for adding a reaction
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('Reaction confirmation data')
+  data: object;
+}
 
 /**
  * Add a reaction to a message
  *
- * @api {post} /slack/reactions/add Add reaction
- * @apiName AddReaction
- * @apiGroup Slack Reactions
- * @apiDescription Add a reaction emoji to a message using reactions.add
- *
- * @apiBody {String} channel Channel ID where the message exists
- * @apiBody {String} timestamp Timestamp of the message
- * @apiBody {String} name Reaction emoji name (without :: colons)
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
+ * @description('Add a reaction emoji to a message using reactions.add')
+ * @summary('Add a reaction')
+ * @tags('slack', 'reactions')
  */
-class AddReaction extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const { channel, timestamp, name } = req.body;
 
@@ -43,14 +59,13 @@ class AddReaction extends BaseAPI {
           message: 'Reaction added successfully'
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = AddReaction;
+module.exports = handler;

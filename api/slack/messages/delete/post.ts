@@ -1,23 +1,38 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for deleting a message
+ */
+class Request {
+  // @description('Channel ID where the message exists')
+  channel!: string;
+
+  // @description('Timestamp of the message to delete')
+  ts!: string;
+
+  // @description('Delete as the authenticated user')
+  as_user?: boolean;
+}
+
+/**
+ * Response schema for deleting a message
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('Deletion confirmation data')
+  data: object;
+}
 
 /**
  * Delete a Slack message
  *
- * @api {post} /slack/messages/delete Delete a message
- * @apiName DeleteMessage
- * @apiGroup Slack Messages
- * @apiDescription Delete a message using chat.delete
- *
- * @apiBody {String} channel Channel ID where the message exists
- * @apiBody {String} ts Timestamp of the message to delete
- * @apiBody {Boolean} [as_user] Optional: Delete as the authenticated user
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
- * @apiSuccess {Object} data Deletion confirmation data
+ * @description('Delete a message using chat.delete')
+ * @summary('Delete a Slack message')
+ * @tags('slack', 'messages')
  */
-class DeleteMessage extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const { channel, ts, as_user } = req.body;
 
@@ -48,14 +63,13 @@ class DeleteMessage extends BaseAPI {
           ts: result.ts
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = DeleteMessage;
+module.exports = handler;

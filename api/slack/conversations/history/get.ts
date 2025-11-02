@@ -1,26 +1,47 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for getting conversation history (query parameters)
+ */
+class Request {
+  // @description('Channel ID to fetch history from')
+  channel!: string;
+
+  // @description('Number of messages to return (default: 100, max: 1000)')
+  limit?: number;
+
+  // @description('Pagination cursor')
+  cursor?: string;
+
+  // @description('End of time range (timestamp)')
+  latest?: string;
+
+  // @description('Start of time range (timestamp)')
+  oldest?: string;
+
+  // @description('Include messages with latest or oldest timestamp')
+  inclusive?: boolean;
+}
+
+/**
+ * Response schema for getting conversation history
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('Message history data')
+  data: object;
+}
 
 /**
  * Get conversation history
  *
- * @api {get} /slack/conversations/history Get conversation history
- * @apiName GetConversationHistory
- * @apiGroup Slack Conversations
- * @apiDescription Fetch messages from a channel using conversations.history
- *
- * @apiQuery {String} channel Channel ID to fetch history from
- * @apiQuery {Number} [limit] Number of messages to return (default: 100, max: 1000)
- * @apiQuery {String} [cursor] Pagination cursor
- * @apiQuery {String} [latest] End of time range (timestamp)
- * @apiQuery {String} [oldest] Start of time range (timestamp)
- * @apiQuery {Boolean} [inclusive] Include messages with latest or oldest timestamp
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
- * @apiSuccess {Object} data Message history data
+ * @description('Fetch messages from a channel using conversations.history')
+ * @summary('Get conversation history')
+ * @tags('slack', 'conversations')
  */
-class GetConversationHistory extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const { channel, limit, cursor, latest, oldest, inclusive } = req.query;
 
@@ -55,14 +76,13 @@ class GetConversationHistory extends BaseAPI {
           response_metadata: result.response_metadata
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = GetConversationHistory;
+module.exports = handler;

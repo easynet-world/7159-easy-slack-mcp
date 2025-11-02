@@ -1,23 +1,38 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for getting file info (query parameters)
+ */
+class Request {
+  // @description('File ID to get information about')
+  file!: string;
+
+  // @description('Number of items to return per page')
+  count?: number;
+
+  // @description('Page number of results')
+  page?: number;
+}
+
+/**
+ * Response schema for getting file info
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('File information')
+  data: object;
+}
 
 /**
  * Get information about a file
  *
- * @api {get} /slack/files/info Get file info
- * @apiName GetFileInfo
- * @apiGroup Slack Files
- * @apiDescription Get information about a file using files.info
- *
- * @apiQuery {String} file File ID to get information about
- * @apiQuery {Number} [count] Number of items to return per page
- * @apiQuery {Number} [page] Page number of results
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
- * @apiSuccess {Object} data File information
+ * @description('Get information about a file using files.info')
+ * @summary('Get file info')
+ * @tags('slack', 'files')
  */
-class GetFileInfo extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const { file, count, page } = req.query;
 
@@ -49,14 +64,13 @@ class GetFileInfo extends BaseAPI {
           paging: result.paging
         }
       });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: error.message,
-        details: error.data || {}
-      });
-    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      details: error.data || {}
+    });
   }
 }
 
-module.exports = GetFileInfo;
+module.exports = handler;

@@ -1,22 +1,38 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for removing a reaction
+ */
+class Request {
+  // @description('Channel ID where the message exists')
+  channel!: string;
+
+  // @description('Timestamp of the message')
+  timestamp!: string;
+
+  // @description('Reaction emoji name (without colons)')
+  name!: string;
+}
+
+/**
+ * Response schema for removing a reaction
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('Reaction removal confirmation data')
+  data: object;
+}
 
 /**
  * Remove a reaction from a message
  *
- * @api {post} /slack/reactions/remove Remove reaction
- * @apiName RemoveReaction
- * @apiGroup Slack Reactions
- * @apiDescription Remove a reaction emoji from a message using reactions.remove
- *
- * @apiBody {String} channel Channel ID where the message exists
- * @apiBody {String} timestamp Timestamp of the message
- * @apiBody {String} name Reaction emoji name (without :: colons)
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
+ * @description('Remove a reaction emoji from a message using reactions.remove')
+ * @summary('Remove a reaction')
+ * @tags('slack', 'reactions')
  */
-class RemoveReaction extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const { channel, timestamp, name } = req.body;
 
@@ -43,14 +59,13 @@ class RemoveReaction extends BaseAPI {
           message: 'Reaction removed successfully'
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = RemoveReaction;
+module.exports = handler;

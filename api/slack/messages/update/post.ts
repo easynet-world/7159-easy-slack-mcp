@@ -1,25 +1,44 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../../utils/slack-client');
+
+/**
+ * Request schema for updating a message
+ */
+class Request {
+  // @description('Channel ID where the message exists')
+  channel!: string;
+
+  // @description('Timestamp of the message to update')
+  ts!: string;
+
+  // @description('New message text content (required if blocks not provided)')
+  text?: string;
+
+  // @description('New blocks for rich formatting (required if text not provided)')
+  blocks?: any[];
+
+  // @description('Update as the authenticated user')
+  as_user?: boolean;
+}
+
+/**
+ * Response schema for updating a message
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('Updated message data from Slack API')
+  data: object;
+}
 
 /**
  * Update a Slack message
  *
- * @api {post} /slack/messages/update Update a message
- * @apiName UpdateMessage
- * @apiGroup Slack Messages
- * @apiDescription Update an existing message using chat.update
- *
- * @apiBody {String} channel Channel ID where the message exists
- * @apiBody {String} ts Timestamp of the message to update
- * @apiBody {String} text New message text content
- * @apiBody {Object} [blocks] Optional new blocks for rich formatting
- * @apiBody {Boolean} [as_user] Optional: Update as the authenticated user
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
- * @apiSuccess {Object} data Updated message data from Slack API
+ * @description('Update an existing message using chat.update')
+ * @summary('Update a Slack message')
+ * @tags('slack', 'messages')
  */
-class UpdateMessage extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const { channel, ts, text, blocks, as_user } = req.body;
 
@@ -60,14 +79,13 @@ class UpdateMessage extends BaseAPI {
           message: result.message
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = UpdateMessage;
+module.exports = handler;

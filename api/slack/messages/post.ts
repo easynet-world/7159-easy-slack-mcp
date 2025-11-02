@@ -1,27 +1,44 @@
-const BaseAPI = require('easy-mcp-server/base-api');
 const slackClient = require('../../../utils/slack-client');
+
+/**
+ * Request schema for posting a message
+ */
+class Request {
+  // @description('Channel ID or name (e.g., "C1234567890" or "#general")')
+  channel!: string;
+
+  // @description('Message text content (required if blocks not provided)')
+  text?: string;
+
+  // @description('Blocks for rich formatting (required if text not provided)')
+  blocks?: any[];
+
+  // @description('Thread timestamp to reply to a thread')
+  thread_ts?: string;
+
+  // @description('Post as the authenticated user')
+  as_user?: boolean;
+}
+
+/**
+ * Response schema for posting a message
+ */
+class Response {
+  // @description('Indicates if the request was successful')
+  success: boolean;
+
+  // @description('Message data from Slack API')
+  data: object;
+}
 
 /**
  * Post a message to a Slack channel
  *
- * @api {post} /slack/messages Post a message
- * @apiName PostMessage
- * @apiGroup Slack Messages
- * @apiDescription Send a message to a Slack channel using chat.postMessage
- *
- * @apiBody {String} channel Channel ID or name (e.g., "C1234567890" or "#general")
- * @apiBody {String} text Message text content
- * @apiBody {Object} [blocks] Optional blocks for rich formatting
- * @apiBody {String} [thread_ts] Optional thread timestamp to reply to a thread
- * @apiBody {Boolean} [as_user] Optional: Post as the authenticated user
- *
- * @apiSuccess {Boolean} success Indicates if the request was successful
- * @apiSuccess {Object} data Message data from Slack API
- * @apiSuccess {String} data.ts Timestamp of the message
- * @apiSuccess {String} data.channel Channel ID where message was posted
+ * @description('Send a message to a Slack channel using chat.postMessage')
+ * @summary('Post a Slack message')
+ * @tags('slack', 'messages')
  */
-class PostMessage extends BaseAPI {
-  async process(req, res) {
+async function handler(req: any, res: any) {
     try {
       const { channel, text, blocks, thread_ts, as_user } = req.body;
 
@@ -62,14 +79,13 @@ class PostMessage extends BaseAPI {
           message: result.message
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({
         success: false,
         error: error.message,
         details: error.data || {}
       });
     }
-  }
 }
 
-module.exports = PostMessage;
+module.exports = handler;
