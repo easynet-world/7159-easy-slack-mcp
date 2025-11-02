@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Full-stack Model Context Protocol (MCP) server for Slack integration with easy-mcp-server",
   "main": "index.js",
+  "bin": {
+    "easy-slack-mcp": "./bin/easy-slack-mcp.js"
+  },
   "scripts": {
     "start": "easy-mcp-server",
     "dev": "easy-mcp-server",
@@ -48,6 +51,7 @@
     "node": ">=16.0.0"
   },
   "files": [
+    "bin/",
     "index.js",
     "api/",
     "tools/",
