@@ -1,6 +1,6 @@
 {
   "name": "slack-mcp",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Full-stack Model Context Protocol (MCP) server for Slack integration with easy-mcp-server",
   "main": "index.js",
   "scripts": {
