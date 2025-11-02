@@ -1,0 +1,42 @@
+{
+  "name": "slack-mcp",
+  "version": "1.0.0",
+  "description": "Full-stack Model Context Protocol (MCP) server for Slack integration with easy-mcp-server",
+  "main": "index.js",
+  "scripts": {
+    "start": "easy-mcp-server",
+    "dev": "easy-mcp-server",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@slack/web-api": "^7.12.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "easy-mcp-server": "^1.0.93",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.10"
+  },
+  "keywords": [
+    "mcp",
+    "slack",
+    "api",
+    "framework",
+    "model-context-protocol",
+    "slack-api",
+    "chatbot",
+    "ai",
+    "automation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/slack-mcp.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
