@@ -23,9 +23,12 @@ SLACK_BOT_TOKEN=xoxb-your-token-here npx easy-slack-mcp
 ```
 
 **That's it!** The server runs on:
-- 🌐 **REST API**: http://localhost:8887
-- 📚 **API Docs**: http://localhost:8887/docs (Swagger UI)
-- 🤖 **MCP Server**: http://localhost:8888
+
+| Service | URL | Notes |
+|---|---|---|
+| REST API | `http://localhost:8887` | Base for all endpoints |
+| API Docs (Swagger UI) | `http://localhost:8887/docs` | Interactive documentation |
+| MCP Server | `http://localhost:8888` | For MCP-compatible clients |
 
 ---
 
@@ -115,6 +118,14 @@ npx easy-slack-mcp
 **For any MCP client:**
 The server runs automatically when invoked via `npx easy-slack-mcp`
 
+#### Client configuration paths
+
+| Client | Platform | Config Location |
+|---|---|---|
+| Cursor | macOS/Windows/Linux | Settings → Features → Model Context Protocol |
+| Claude Desktop | macOS | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| Claude Desktop | Windows | `%APPDATA%\Claude\claude_desktop_config.json` |
+
 ### Option B: Local Installation
 
 If you prefer a local setup:
@@ -143,19 +154,10 @@ Once the server is running, you have full access to Slack via REST endpoints.
 
 ### 🔍 Interactive API Documentation
 
-**Swagger UI** (Recommended - Visual Interface):
-```
-http://localhost:8887/docs
-```
-- Browse all endpoints
-- Try requests directly in the browser
-- See request/response schemas
-
-**OpenAPI JSON**:
-```
-http://localhost:8887/openapi.json
-```
-- Import into Postman, Insomnia, or any OpenAPI-compatible tool
+| Name | URL | Best for |
+|---|---|---|
+| Swagger UI | `http://localhost:8887/docs` | Browsing endpoints, trying requests, viewing schemas |
+| OpenAPI JSON | `http://localhost:8887/openapi.json` | Import into Postman/Insomnia or tooling |
 
 ### 📝 Common API Examples
 
@@ -199,39 +201,28 @@ curl -X POST http://localhost:8887/slack/files/upload \
 
 ## 📚 All Available Endpoints
 
-### Messages
-- `POST /slack/messages` - Send a message
-- `POST /slack/messages/update` - Update a message
-- `POST /slack/messages/delete` - Delete a message
-
-### Conversations (Channels)
-- `GET /slack/conversations/list` - List all channels
-- `GET /slack/conversations/info` - Get channel details
-- `POST /slack/conversations/create` - Create a channel
-- `GET /slack/conversations/history` - Get message history
-
-### Users
-- `GET /slack/users/list` - List workspace users
-- `GET /slack/users/info` - Get user details
-- `GET /slack/users/profile` - Get user profile
-
-### Files
-- `POST /slack/files/upload` - Upload a file
-- `GET /slack/files/list` - List files
-- `GET /slack/files/info` - Get file info
-
-### Reactions
-- `POST /slack/reactions/add` - Add a reaction
-- `POST /slack/reactions/remove` - Remove a reaction
-
-### Authentication
-- `GET /slack/auth/test` - Test authentication
-
-### System
-- `GET /health` - Health check
-- `GET /api-info` - API information
-- `GET /openapi.json` - OpenAPI specification
-- `GET /docs` - Swagger UI documentation
+| Category | Method | Path | Description |
+|---|---|---|---|
+| Messages | POST | `/slack/messages` | Send a message |
+| Messages | POST | `/slack/messages/update` | Update a message |
+| Messages | POST | `/slack/messages/delete` | Delete a message |
+| Conversations | GET | `/slack/conversations/list` | List all channels |
+| Conversations | GET | `/slack/conversations/info` | Get channel details |
+| Conversations | POST | `/slack/conversations/create` | Create a channel |
+| Conversations | GET | `/slack/conversations/history` | Get message history |
+| Users | GET | `/slack/users/list` | List workspace users |
+| Users | GET | `/slack/users/info` | Get user details |
+| Users | GET | `/slack/users/profile` | Get user profile |
+| Files | POST | `/slack/files/upload` | Upload a file |
+| Files | GET | `/slack/files/list` | List files |
+| Files | GET | `/slack/files/info` | Get file info |
+| Reactions | POST | `/slack/reactions/add` | Add a reaction |
+| Reactions | POST | `/slack/reactions/remove` | Remove a reaction |
+| Authentication | GET | `/slack/auth/test` | Test authentication |
+| System | GET | `/health` | Health check |
+| System | GET | `/api-info` | API information |
+| System | GET | `/openapi.json` | OpenAPI specification |
+| System | GET | `/docs` | Swagger UI documentation |
 
 ---
 
@@ -241,20 +232,41 @@ curl -X POST http://localhost:8887/slack/files/upload \
 
 All configuration can be set via environment variables:
 
-```bash
-# Required
-SLACK_BOT_TOKEN=xoxb-your-token-here
+| Name | Required | Default | Description |
+|---|---|---|---|
+| `SLACK_BOT_TOKEN` | Yes | — | Bot User OAuth Token (starts with `xoxb-`) |
+| `SLACK_APP_TOKEN` | No | — | App-level token for Socket Mode (starts with `xapp-`) |
+| `SLACK_SIGNING_SECRET` | No | — | Verifies Slack request signatures for Events/API Gateway |
+| `EASY_MCP_SERVER_PORT` | No | `8887` | REST API port |
+| `EASY_MCP_SERVER_MCP_PORT` | No | `8888` | MCP server port |
 
+Example `.env` content:
+
+```bash
+SLACK_BOT_TOKEN=xoxb-your-token-here
 # Optional
-SLACK_APP_TOKEN=xapp-your-app-token      # For Socket Mode
-SLACK_SIGNING_SECRET=your-signing-secret # For event verification
-EASY_MCP_SERVER_PORT=8887                # REST API port (default: 8887)
-EASY_MCP_SERVER_MCP_PORT=8888           # MCP server port (default: 8888)
+SLACK_APP_TOKEN=xapp-your-app-token
+SLACK_SIGNING_SECRET=your-signing-secret
+EASY_MCP_SERVER_PORT=8887
+EASY_MCP_SERVER_MCP_PORT=8888
 ```
 
 ### Required Slack Scopes
 
-See the [Detailed Configuration](#-detailed-configuration) section above for the complete list of required Slack scopes when setting up your app.
+See the [Detailed Configuration](#-detailed-configuration) section above for setup steps. The bot typically needs these scopes:
+
+| Scope | Purpose |
+|---|---|
+| `chat:write` | Send messages as the bot |
+| `chat:write.public` | Post to channels the bot isn’t a member of |
+| `channels:read` | View basic channel information |
+| `channels:history` | Read channel messages |
+| `users:read` | View users in the workspace |
+| `users:read.email` | View user email addresses |
+| `files:write` | Upload files |
+| `files:read` | View files |
+| `reactions:write` | Add reactions to messages |
+| `reactions:read` | View reactions on messages |
 
 ---
 
@@ -280,31 +292,6 @@ See the [Detailed Configuration](#-detailed-configuration) section above for the
 
 ---
 
-## 🔧 Troubleshooting
-
-### Server won't start
-- ✅ Check that port 8887/8888 is not in use
-- ✅ Verify your `SLACK_BOT_TOKEN` is correct in `.env`
-- ✅ Ensure Node.js >= 16.0.0 is installed
-
-### "not_authed" errors
-- ✅ Verify token starts with `xoxb-`
-- ✅ Reinstall app to workspace to refresh token
-- ✅ Check token is set in environment or `.env` file
-
-### "channel_not_found" errors
-- ✅ Invite the bot to the channel: `/invite @your-bot-name`
-- ✅ Verify channel ID is correct
-- ✅ Check required scopes are added
-
-### MCP not working in Cursor/Claude
-- ✅ Restart Cursor/Claude after adding MCP config
-- ✅ Check server is running (`curl http://localhost:8887/health`)
-- ✅ Verify environment variables are set correctly
-- ✅ Check Cursor/Claude logs for MCP errors
-
----
-
 ## 📖 Learn More
 
 - **Easy MCP Server Framework**: 
@@ -319,9 +306,11 @@ See the [Detailed Configuration](#-detailed-configuration) section above for the
 
 ## 📦 Package Info
 
-- **npm**: [easy-slack-mcp](https://www.npmjs.com/package/easy-slack-mcp)
-- **Repository**: [GitHub](https://github.com/easynet-world/7159-easy-slack-mcp)
-- **License**: MIT
+| Item | Link/Value |
+|---|---|
+| npm | [easy-slack-mcp](https://www.npmjs.com/package/easy-slack-mcp) |
+| Repository | [GitHub](https://github.com/easynet-world/7159-easy-slack-mcp) |
+| License | MIT |
 
 ---
 
@@ -331,6 +320,7 @@ See the [Detailed Configuration](#-detailed-configuration) section above for the
 2. Test authentication: `curl http://localhost:8887/slack/auth/test`
 3. Check server health: `curl http://localhost:8887/health`
 4. Review the [setup guide](mcp/resources/slack-quick-start.md)
+5. For customization or support, contact `info@easynet.world`
 
 ---
 
