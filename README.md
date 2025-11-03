@@ -1,5 +1,7 @@
 # easy-slack-mcp
 
+<img src="images/slack.jpg" alt="Slack Logo" style="width: 100%;"/>
+
 <h2 style="font-size: 1.5em; margin: 1em 0;">🚀 The Easiest way to run Slack MCP</h2>
 
 **Slack integration for AI assistants** - Connect Cursor, Claude Desktop, and other MCP-compatible tools directly to Slack. Send messages, read channels, manage users, and automate workflows with AI.
