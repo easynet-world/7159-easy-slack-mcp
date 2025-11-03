@@ -16,6 +16,23 @@
 
 ---
 
+## 📦 What We Provide
+
+| Feature | Description |
+|---|---|
+| **MCP Server** | Full Model Context Protocol integration for AI assistants (Cursor, Claude Desktop, etc.) |
+| **REST API** | Complete Slack API wrapper with OpenAPI/Swagger documentation |
+| **Message Management** | Send, update, and delete messages in channels and DMs |
+| **Channel Operations** | List, create, view details, and read message history for channels |
+| **User Management** | List users, get user info, and access user profiles |
+| **File Operations** | Upload files, list files, and get file information |
+| **Reactions** | Add and remove emoji reactions to messages |
+| **Interactive Docs** | Swagger UI for exploring and testing all endpoints |
+| **Zero Configuration** | Run with a single command - just provide your Slack bot token |
+| **Production Ready** | Built on [easy-mcp-server](https://github.com/easynet-world/7134-easy-mcp-server) framework |
+
+---
+
 ## 🚀 Quick Start
 
 ```bash
