@@ -7,6 +7,12 @@
 **Slack integration for AI assistants** - Connect Cursor, Claude Desktop, and other MCP-compatible tools directly to Slack. Send messages, read channels, manage users, and automate workflows with AI.
 
 [![npm version](https://img.shields.io/npm/v/easy-slack-mcp)](https://www.npmjs.com/package/easy-slack-mcp)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen.svg)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![MCP](https://img.shields.io/badge/MCP-Compatible-success.svg)](https://modelcontextprotocol.io/)
+[![Slack API](https://img.shields.io/badge/Slack-API-4A154B.svg?logo=slack&logoColor=white)](https://api.slack.com/)
+[![Powered by easy-mcp-server](https://img.shields.io/badge/Powered%20by-easy--mcp--server-orange.svg)](https://github.com/easynet-world/7134-easy-mcp-server)
 
 ---
 
